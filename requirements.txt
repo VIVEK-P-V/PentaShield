@@ -1,0 +1,6 @@
+flask
+nmap
+prettytable
+numpy
+torch
+scikit-learn

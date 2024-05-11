@@ -1,1 +1,4 @@
 reports
+TEST_output
+LSTM_model
+exploit_detection_model
