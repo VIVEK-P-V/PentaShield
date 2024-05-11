@@ -1,0 +1,24 @@
+Exploit,Port,Product,Version,Service
+exploit/unix/ftp/vsftpd_234_backdoor       ,21,vsftpd,2.3.4,ftp
+exploit/multi/ssh/sshexec,22,OpenSSH,4.7p1 Debian 8ubuntu1,ssh
+auxiliary/scanner/telnet/telnet_version,23,Linux telnetd,,telnet
+auxiliart/scanner/smtp/smtp_enum,25,Postfix smtpd,,smtp
+auxiliary/spoof/dns/bailiwicked_domain,53,ISC BIND,9.4.2,domain
+exploit/unix/webapp/twiki_history,80,Apache httpd,2.2.8,http
+auxiliary/dos/rpc/rpcbomb,111,,,rpcbind
+exploit/multi/samba/usermap_scrip,139,Samba smbd,3.X - 4.X,netbios-ssn
+exploit/multi/samba/usermap_scrip,445,Samba smbd,3.X - 4.X,netbios-ssn
+auxiliary/scanner/rservices/rsh_login ,512,,,exec
+auxiliary/scanner/rservices/rsh_login ,513,,,login
+auxiliary/scanner/rservices/rsh_login ,514,,,shell
+exploit/multi/misc/java_rmi_server,1099,GNU Classpath grmiregistry,,rmiregistry
+auxiliary/scanner/mysql/mysql_version,1524,Metasploitable root shell,,shell
+auxiliary/scanner/nfs/nfsmount,2049,,2-4,nfs
+auxiliary/scanner/postgres/postgres_login,2121,ProFTPD,1.3.1,ftp
+exploit/linux/mysql/mysql_yassl_getname,3306,MySQL,,mysql
+exploit/linux/postgres/postgres_payload,5432,PostgreSQL DB,8.3.0 - 8.3.7,postgresql
+auxiliary/scanner/vnc/vnc_login,5900,VNC,,vnc
+auxiliary/scanner/x11/open_x11,6000,,,X11
+exploit/unix/irc/unreal_ircd_3281_backdoor,6667,UnrealIRCd,,irc
+auxiliary/admin/http/tomcat_ghostcat,8009,Apache Jserv,,ajp13
+auxiliary/scanner/http/dir_scanner,8180,Apache Tomcat/Coyote JSP engine,1.1,http

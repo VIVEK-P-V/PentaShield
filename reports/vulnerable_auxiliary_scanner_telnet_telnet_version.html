@@ -1,0 +1,66 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Report</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+            h1 {
+                color: #333;
+            }
+            p {
+                color: #666;
+            }
+            pre {
+                background-color: #f5f5f5;
+                padding: 10px;
+                border-radius: 5px;
+                overflow-x: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Exploit Information</h1>
+        <p>Exploit Name: auxiliary/scanner/telnet/telnet_version</p>
+        <p>Port: 23</p>
+        <p>Service: telnet</p>
+        <p>Product: Linux telnetd</p>
+        <p>Version: </p>
+        <p>Vulnerable: True</p>
+        <pre>       Name: Telnet Service Banner Detection
+     Module: auxiliary/scanner/telnet/telnet_version
+    License: Metasploit Framework License (BSD)
+       Rank: Normal
+
+Provided by:
+  hdm <x@hdm.io>
+
+Check supported:
+  No
+
+Basic options:
+  Name      Current Setting  Required  Description
+  ----      ---------------  --------  -----------
+  PASSWORD                   no        The password for the specified username
+  RHOSTS                     yes       The target host(s), see https://docs.me
+                                       tasploit.com/docs/using-metasploit/basi
+                                       cs/using-metasploit.html
+  RPORT     23               yes       The target port (TCP)
+  THREADS   1                yes       The number of concurrent threads (max o
+                                       ne per host)
+  TIMEOUT   30               yes       Timeout for the Telnet probe
+  USERNAME                   no        The username to authenticate as
+
+Description:
+  Detect telnet services
+
+
+View the full module info with the [32minfo -d command.
+
+[?1034h[4mmsf6 > </pre>
+    </body>
+    </html>
+    

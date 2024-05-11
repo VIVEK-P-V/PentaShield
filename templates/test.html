@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PentaShield Testing</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #output {
+            width: 100%;
+            height: 200px;
+            border: 1px solid #ccc;
+            font-family: monospace;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @media screen and (max-width: 600px) {
+            form {
+                padding: 10px;
+            }
+
+            input[type="text"],
+            input[type="submit"] {
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeIn {
+            animation: fadeIn 1s ease-in-out;
+        }
+    </style>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var targetIpField = document.getElementById('target_ip');
+            var outputDiv = document.getElementById('output');
+
+            targetIpField.addEventListener('input', function () {
+                // Clear the output when target IP changes
+                outputDiv.textContent = '';
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="PentaShield Logo" style="height: 1em; vertical-align: baseline;">
+            <span style="font-size: 1.2em;">P</span>entaShield Testing
+        </h1>
+        <form method="post" action="{{ url_for('test') }}" class="fadeIn">
+            <label for="target_ip">Target IP or hostname:</label>
+            <input type="text" id="target_ip" name="target_ip">
+            <br>
+            <input type="submit" value="Test">
+        </form>
+        <div id="output" class="fadeIn">{{ output }}</div>
+	<a href="{{ url_for('index') }}" class="btn">Back</a>
+	<a href="{{ url_for('report') }}" class="btn">Report</a>
+    </div>
+</body>
+</html>
+

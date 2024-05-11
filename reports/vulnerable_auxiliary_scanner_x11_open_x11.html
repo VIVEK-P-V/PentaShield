@@ -1,0 +1,68 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Report</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+            h1 {
+                color: #333;
+            }
+            p {
+                color: #666;
+            }
+            pre {
+                background-color: #f5f5f5;
+                padding: 10px;
+                border-radius: 5px;
+                overflow-x: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Exploit Information</h1>
+        <p>Exploit Name: auxiliary/scanner/x11/open_x11</p>
+        <p>Port: 6000</p>
+        <p>Service: X11</p>
+        <p>Product: </p>
+        <p>Version: </p>
+        <p>Vulnerable: True</p>
+        <pre>       Name: X11 No-Auth Scanner
+     Module: auxiliary/scanner/x11/open_x11
+    License: Metasploit Framework License (BSD)
+       Rank: Normal
+
+Provided by:
+  tebo <tebodell@gmail.com>
+
+Check supported:
+  No
+
+Basic options:
+  Name     Current Setting  Required  Description
+  ----     ---------------  --------  -----------
+  RHOSTS                    yes       The target host(s), see https://docs.met
+                                      asploit.com/docs/using-metasploit/basics
+                                      /using-metasploit.html
+  RPORT    6000             yes       The target port (TCP)
+  THREADS  1                yes       The number of concurrent threads (max on
+                                      e per host)
+
+Description:
+  This module scans for X11 servers that allow anyone
+  to connect without authentication.
+
+References:
+  OSVDB (309)
+  https://nvd.nist.gov/vuln/detail/CVE-1999-0526
+
+
+View the full module info with the [32minfo -d command.
+
+[?1034h[4mmsf6 > </pre>
+    </body>
+    </html>
+    
