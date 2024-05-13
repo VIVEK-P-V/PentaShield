@@ -179,12 +179,12 @@ def run_metasploit(exploit_name, ip_address):
 
     # Interact with Metasploit
     msf_process = subprocess.Popen(["msfconsole", "-q", "-x", exploit_cmd, "-x", rhost_cmd], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
-    output, _ = msf_process.communicate(input="exploit\nexit\n")
+    output, _ = msf_process.communicate(input="run\nexit\n")
 
     print(output)  # Print the output for debugging purposes
 
 # Function to generate exploit report in HTML format
-def generate_exploit_report(exploit_name, port, service, product, version, vulnerable):
+def generate_exploit_report(exploit_name, port, service, product, version, vulnerable, ip_address):
     exploit_info_cmd = f"info {exploit_name}"
     msf_process = subprocess.Popen(["msfconsole", "-q", "-x", exploit_info_cmd], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
     output, _ = msf_process.communicate(input="exit\n")
@@ -194,35 +194,8 @@ def generate_exploit_report(exploit_name, port, service, product, version, vulne
     output = re.sub(r'\r?\n?View the full module info with the \[32minfo -d\[0m command.', '', output)
     output = re.sub(r'\[\?1034h\[4mmsf6\[0m \[0m> \[0m', '', output)
 
-    # Define vulnerability status for the filename
-    vulnerability_status = "vulnerable" if vulnerable else "non_vulnerable"
-
-    html_report = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Report</title>
-	<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-        <style>
-            body {{
-                font-family: Arial, sans-serif;
-                margin: 20px;
-            }}
-            h1 {{
-                color: #333;
-            }}
-            p {{
-                color: #666;
-            }}
-            pre {{
-                background-color: #f5f5f5;
-                padding: 10px;
-                border-radius: 5px;
-                overflow-x: auto;
-            }}
-        </style>
-    </head>
-    <body>
+    report_entry = f"""
+    <div>
         <h1>Exploit Information</h1>
         <p>Exploit Name: {exploit_name}</p>
         <p>Port: {port}</p>
@@ -231,87 +204,52 @@ def generate_exploit_report(exploit_name, port, service, product, version, vulne
         <p>Version: {version}</p>
         <p>Vulnerable: {vulnerable}</p>
         <pre>{output}</pre>
-    </body>
-    </html>
+    </div>
     """
 
+    return report_entry
+
+def create_main_report_page(reports, ip_address):
     report_dir = Path("reports")
     report_dir.mkdir(exist_ok=True)
-    report_file = report_dir / f"{vulnerability_status}_{exploit_name.replace('/', '_')}.html"
-    with open(report_file, "w", encoding="utf-8") as f:
-        f.write(html_report)
-
-    print(f"Exploit report generated: {report_file}")
-
-    # Update the main report page with the newly generated report
-    create_main_report_page(report_dir)
-
-def create_main_report_page(report_dir):
-    report_files = [f for f in report_dir.iterdir() if f.is_file() and f.suffix == ".html" and f.name != "index.html"]
 
     main_report = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title> Report </title>
-	<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-        <style>
-            body {{
-                font-family: Arial, sans-serif;
-                margin: 20px;
-            }}
-            h1 {{
-                color: #333;
-            }}
-            table {{
-                width: 100%;
-                border-collapse: collapse;
-            }}
-            th, td {{
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }}
-            th {{
-                background-color: #f2f2f2;
-            }}
-            tr:nth-child(even) {{
-                background-color: #f2f2f2;
-            }}
-            tr:hover {{
-                background-color: #ddd;
-            }}
-            a {{
-                color: #007bff;
-                text-decoration: none;
-            }}
-            a:hover {{
-                text-decoration: underline;
-            }}
-        </style>
-    </head>
-    <body>
-        <h1>Report List</h1>
-	<h1>IP : {ip_address}</h1>
-        <table>
-            <tr>
-                <th>NO :</th>
-                <th>Exploit Name</th>
-                <th>Vulnerable</th>
-            </tr>
-    """
-
-    for idx, report_file in enumerate(report_files, start=1):
-        exploit_name = report_file.stem.split('_', 1)[1].replace("_", "/")
-        vulnerability_status = report_file.stem.split('_', 1)[0]
-        # Check if the exploit is vulnerable based on report filename
-        vulnerable = "Yes" if vulnerability_status == "vulnerable" else "No"
-        main_report += f"<tr><td>{idx}</td><td><a href='{report_file.name}'>{exploit_name}</a></td><td>{vulnerable}</td></tr>"
-
-    main_report += """
-        </table>
-    </body>
-    </html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }}
+        h1 {{
+            color: #333;
+        }}
+        p {{
+            color: #666;
+        }}
+        pre {{
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }}
+        div {{
+            margin-bottom: 40px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }}
+    </style>
+</head>
+<body>
+    <h1>Report List</h1>
+    <h1>IP: {ip_address}</h1>
+    {"".join(reports)}
+</body>
+</html>
     """
 
     main_report_file = report_dir / "index.html"
@@ -319,8 +257,6 @@ def create_main_report_page(report_dir):
         f.write(main_report)
 
     print(f"Main report page generated: {main_report_file}")
-    return main_report_file
-
 
 # Load trained model
 model_path = os.path.join('exploit_detection_model', 'exploit_detection_model.pth')
@@ -355,6 +291,7 @@ vectorizer = CountVectorizer(max_features=86)
 vectorizer.fit(exploits)
 
 # Iterate through Nmap scan results and predict vulnerability
+reports = []
 for result in nmap_results:
     ip_address = result['IP']
     input_string = f"Port: {result['Port']}, Service: {result['Service']}, State: {result['State']}, Product: {result['Product']}, Version: {result['Version']}"
@@ -376,7 +313,8 @@ for result in nmap_results:
                 exploit_run = True
 
                 # Generate exploit report in HTML format
-                generate_exploit_report(exploit_name, result['Port'], result['Service'], result['Product'], result['Version'], vulnerable=True)
+                report_entry = generate_exploit_report(exploit_name, result['Port'], result['Service'], result['Product'], result['Version'], vulnerable=True, ip_address=ip_address)
+                reports.append(report_entry)
                 break  # Break out of the loop after running the first matching exploit
 
         if not exploit_run:
@@ -384,3 +322,5 @@ for result in nmap_results:
     else:
         print("No Vulnerability Detected for this entry.")
 
+# Create main report page
+create_main_report_page(reports, ip_address)

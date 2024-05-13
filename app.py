@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+
 import subprocess
 import re
 import os
@@ -35,18 +36,20 @@ def test():
         args = ['python3', 'test.py', target_ip]
         process = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         output = process.stdout
-
         # Remove ASCII color codes and Metasploit prompt from the output
-        output = re.sub(r'\x1b\[[0-9;]*m', '', output)
+        output = re.sub(r'\x1b\[\[0-9;\]*m', '', output)
         output = re.sub(r'\[\?1034h', '', output)
-
         return render_template('test.html', output=output)
     return render_template('test.html')
 
 @app.route('/report')
 def report():
     report_path = os.path.join(os.path.dirname(__file__), 'reports', 'index.html')
-    return send_from_directory(os.path.dirname(report_path), 'index.html')
+    try:
+        return send_from_directory(os.path.dirname(report_path), 'index.html')
+    except Exception as e:
+        # If index.html is not found or not ready, render a template with a loading animation
+        return render_template('loading.html', color='#007bff')
 
 if __name__ == '__main__':
     app.run(debug=True)
