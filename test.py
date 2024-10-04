@@ -31,7 +31,7 @@ class PortStateLSTM(nn.Module):
 def run_nmap_scan(target):
     try:
         nm = nmap.PortScanner()
-        nm.scan(hosts=target, arguments='-Pn -sV')  # Run service version detection
+        nm.scan(hosts=target, arguments='-Pn -sV')  # Running service version detection
         return nm.all_hosts(), nm[target]['tcp']
     except Exception as e:
         print("Error performing network scan:", str(e))
